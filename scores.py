@@ -23,18 +23,22 @@ class ScoresAll(QtWidgets.QMainWindow, Ui_Scores):
             self.third_input.setEnabled(attempts >= 3)
             self.label_forthattempts.setEnabled(attempts >= 4)
             self.forth_input.setEnabled(attempts >= 4)
-        except ValueError as e:
-            QtWidgets.QMessageBox.warning(self, 'Error', str(e))
+        except ValueError:
+            QtWidgets.QMessageBox.warning(self, 'Error', 'Please input number of attempts: Number 1-4')
             self.attempts_Input.setText('')
             return
 
     def validate_score(self, score: int):
-        if 0 <= score <= 100:
-            return True
-        else:
-            QtWidgets.QMessageBox.warning(self, 'Error', 'Score must be between 0 and 100')
+        try:
+            score_int = int(score)
+            if 0 <= score_int <= 100:
+                return True
+            else:
+                QtWidgets.QMessageBox.warning(self, 'Error', 'Score must be between 0 and 100')
+                return False
+        except ValueError:
+            QtWidgets.QMessageBox.warning(self, 'Error', 'Score must be a valid integer')
             return False
-
     def submit_data(self):
         name = self.name_Input.text()
         student_id = self.id_Input.text()
